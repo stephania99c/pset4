@@ -1,0 +1,59 @@
+Eres analista de cobranzas. Cada fila es un crédito de auto en mora, con datos del cierre de hoy. paga_7d = 1 si el cliente paga al menos una cuota en los próximos 7 días.
+Columnas: dias_mora (días de atraso), cuotas_mora (cuotas vencidas), valor_deuda_exigible y capital_insoluto (en dólares), estado_operacion, plazo_terminado (1 = todas las cuotas ya vencieron), compromiso_semana_previa (1 = prometió pagar en la última semana), gestionado_7d (1 = será llamado en los próximos 7 días).
+
+Ejemplos resueltos:
+dias_mora,cuotas_mora,valor_deuda_exigible,capital_insoluto,estado_operacion,plazo_terminado,compromiso_semana_previa,gestionado_7d,paga_7d
+17,1,317.14,2069.56,VENCIDO,0,0,1,1
+61,2,1136.9,13035.33,NON ACCRUAL,0,0,0,1
+20,1,518.36,9037.07,VENCIDO,0,1,1,1
+27,1,518.61,15897.37,VENCIDO,0,0,1,1
+15,1,489.9,14857.46,VENCIDO,0,0,1,1
+974,33,10827.33,10550.02,NON ACCRUAL,0,0,0,0
+83,3,1030.28,11067.51,NON ACCRUAL,0,0,0,0
+1228,23,16125.38,9878.28,CASTIGADA,1,0,1,0
+3,1,79.95,11897.74,VENCIDO,0,0,0,0
+807,27,6364.51,8228.07,NON ACCRUAL,0,0,1,0
+
+Estima la probabilidad de que paga_7d = 1 para cada una de estas 40 filas. Responde SOLO con 40 números entre 0 y 1, uno por línea, en el mismo orden, sin texto adicional.
+
+dias_mora,cuotas_mora,valor_deuda_exigible,capital_insoluto,estado_operacion,plazo_terminado,compromiso_semana_previa,gestionado_7d
+16,1,576.33,13777.97,VENCIDO,0,0,1
+1351,32,23646.7,14175.29,NON ACCRUAL,1,0,0
+260,9,3533.42,10223.62,NON ACCRUAL,0,0,1
+1,1,419.8,19047.57,VENCIDO,0,0,1
+479,16,8057.56,13927.99,NON ACCRUAL,0,0,0
+292,10,8553.9,21743.64,NON ACCRUAL,0,0,0
+394,13,5786.03,13426.56,NON ACCRUAL,0,0,1
+20,1,191.67,21655.95,VENCIDO,0,1,1
+1131,38,31787.23,21566.84,NON ACCRUAL,0,0,0
+44,2,479.32,6085.75,NON ACCRUAL,0,0,1
+1114,33,15447.87,8609.55,NON ACCRUAL,1,0,1
+14,1,575.1,25106.97,VENCIDO,0,0,0
+72,3,2747.36,28374.8,NON ACCRUAL,0,0,0
+418,14,651.9,1343.28,NON ACCRUAL,0,0,0
+19,1,504.64,17410.88,VENCIDO,0,0,0
+268,9,3540.82,10223.62,CASTIGADA,0,0,0
+25,1,792.5,21196.49,VENCIDO,0,1,1
+5,1,46.81,7838.83,VENCIDO,0,0,0
+33,2,1063.64,12848.1,NON ACCRUAL,0,0,1
+1334,6,3770.05,1380.61,CASTIGADA,1,0,0
+693,23,6238.64,9160.99,NON ACCRUAL,0,0,1
+1,1,271.36,11406.51,VENCIDO,0,0,0
+7,1,658.1,12188.02,VENCIDO,0,0,1
+21,1,525.45,12547.55,VENCIDO,0,0,1
+189,7,5224.8,18494.99,NON ACCRUAL,0,0,0
+9,1,686.23,16594.8,VENCIDO,0,0,1
+1214,23,15166.04,8429.41,CASTIGADA,1,0,0
+258,9,3531.55,10223.62,NON ACCRUAL,0,0,1
+370,13,5944.44,14315.46,NON ACCRUAL,0,0,1
+10,1,484.48,10879.35,VENCIDO,0,0,1
+1101,25,14882.57,7962.88,NON ACCRUAL,1,0,0
+41,2,1003.69,13978.18,NON ACCRUAL,0,1,0
+19,1,409.39,8930.19,VENCIDO,0,0,1
+781,26,17021.85,27705.47,NON ACCRUAL,0,0,0
+24,1,70.6,3438.99,VENCIDO,0,0,1
+457,8,2641.44,2001.47,NON ACCRUAL,1,0,1
+13,1,471.13,8199.3,VENCIDO,0,0,0
+1,1,480.17,12565.28,VENCIDO,0,0,0
+31,2,8772.82,110659.8,NON ACCRUAL,0,0,0
+235,8,3049.56,16426.36,CASTIGADA,0,0,0

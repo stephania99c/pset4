@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: slv_cartera_diaria
+    description: Cartera diaria con tipos corregidos y marcas de alcance (es_auto, es_principal).
+    columns:
+      - name: numero_operacion
+        tests: [not_null]
+      - name: fecha_corte
+        tests: [not_null]
+      - name: tipo_pagare
+        tests:
+          - accepted_values:
+              values: ['PRINCIPAL', 'SEGURO', 'DISPOSITIVO']
+
+  - name: slv_operaciones
+    description: Una fila por operacion del historico, con la marca es_auto.
+    columns:
+      - name: numero_operacion
+        tests: [not_null, unique]
+
+  - name: slv_pagos
+    description: Pagos con marcas es_posible_duplicado, es_aplicado y es_auto. No se elimina ninguno.
+    columns:
+      - name: pago_id
+        tests: [not_null, unique]
+      - name: estado
+        tests:
+          - accepted_values:
+              values: ['APLICADA', 'REVERSADA']
+
+  - name: slv_gestiones
+    description: Gestiones con marcas es_posible_duplicado, es_call_center y es_auto.
+    columns:
+      - name: gestion_id
+        tests: [not_null, unique]
+      - name: contacto
+        tests: [not_null]

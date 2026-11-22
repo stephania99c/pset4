@@ -1,0 +1,40 @@
+id: ingesta_cartera
+namespace: pset2.cartera
+description: Ingesta diaria de la cartera hacia Snowflake (esquema RAW).
+
+inputs:
+  - id: fecha
+    type: STRING
+    required: false
+    description: Fecha del corte (AAAA-MM-DD)
+
+concurrency:
+  limit: 1
+  behavior: QUEUE
+
+tasks:
+  - id: cargar_raw
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: pset2-tools:1.0
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      pullPolicy: NEVER
+    env:
+      SNOWFLAKE_ACCOUNT: "{{ envs.snowflake_account }}"
+      SNOWFLAKE_USER: "{{ envs.snowflake_user }}"
+      SNOWFLAKE_PAT: "{{ envs.snowflake_pat }}"
+      SNOWFLAKE_ROLE: "{{ envs.snowflake_role }}"
+      SNOWFLAKE_WAREHOUSE: "{{ envs.snowflake_warehouse }}"
+      FUENTE_URL: "{{ envs.fuente_url }}"
+    commands:
+      - python /app/ingesta/ingesta.py --fecha "{{ inputs.fecha ?? trigger.date ?? execution.startDate }}"
+    retry:
+      type: constant
+      maxAttempts: 3
+      interval: PT5M
+
+triggers:
+  - id: diario
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 7 * * *"
+    timezone: America/Guayaquil

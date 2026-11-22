@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: dim_fecha
+    columns:
+      - name: fecha
+        tests: [not_null, unique]
+
+  - name: dim_operacion
+    description: Creditos de auto. es_cancelada indica si el historico la marca como CANCELADO.
+    columns:
+      - name: numero_operacion
+        tests: [not_null, unique]
+
+  - name: dim_cliente
+    columns:
+      - name: cliente_id
+        tests: [not_null, unique]
+
+  - name: dim_cobrador
+    columns:
+      - name: cobrador_id
+        tests: [not_null, unique]
+
+  - name: fct_cartera_diaria
+    description: "Grano: una operacion de auto (pagare PRINCIPAL) por dia de corte."
+    columns:
+      - name: cartera_diaria_id
+        tests: [not_null, unique]
+      - name: numero_operacion
+        tests:
+          - relationships: {to: ref('dim_operacion'), field: numero_operacion}
+      - name: cliente_id
+        tests:
+          - relationships: {to: ref('dim_cliente'), field: cliente_id}
+      - name: fecha_corte
+        tests:
+          - relationships: {to: ref('dim_fecha'), field: fecha}
+
+  - name: fct_pagos
+    description: "Grano: un pago aplicado de recaudacion."
+    columns:
+      - name: pago_id
+        tests: [not_null, unique]
+      - name: numero_operacion
+        tests:
+          - relationships: {to: ref('dim_operacion'), field: numero_operacion}
+      - name: fecha_pago
+        tests:
+          - relationships: {to: ref('dim_fecha'), field: fecha}
+
+  - name: fct_gestiones
+    description: "Grano: una gestion de call center (sin duplicados)."
+    columns:
+      - name: gestion_id
+        tests: [not_null, unique]
+      - name: numero_operacion
+        tests:
+          - relationships: {to: ref('dim_operacion'), field: numero_operacion}
+      - name: cobrador_id
+        tests:
+          - relationships: {to: ref('dim_cobrador'), field: cobrador_id}
+      - name: fecha_gestion
+        tests:
+          - relationships: {to: ref('dim_fecha'), field: fecha}

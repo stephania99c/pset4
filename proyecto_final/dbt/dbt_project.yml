@@ -1,0 +1,19 @@
+name: cartera
+version: "1.0"
+profile: cartera
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+models:
+  cartera:
+    bronze:
+      +schema: BRONZE
+      +materialized: view
+    silver:
+      +schema: SILVER
+      +materialized: table
+    gold:
+      +schema: GOLD
+      +materialized: table

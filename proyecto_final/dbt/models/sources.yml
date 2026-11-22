@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: raw
+    database: CARTERA
+    schema: RAW
+    description: Datos crudos cargados por Kestra desde el Release datos-v1.
+    tables:
+      - name: cartera_diaria
+        description: Un corte diario de la cartera; grano operación + tipo de pagaré + fecha de corte.
+      - name: operaciones
+        description: Histórico de operaciones (foto de noviembre, sin fecha).
+      - name: gestiones
+        description: Reporte mensual de gestiones de cobranza.
+      - name: pagos
+        description: Reporte mensual de pagos (aplicados y reversados).
