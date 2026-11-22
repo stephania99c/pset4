@@ -43,6 +43,7 @@ services:
 
   # Servicio de prediccion (seccion 2 del PSet 4)
   api:
+    image: ghcr.io/stephania99c/pset4-api:${API_TAG:-local}
     build: ./api
     ports: ["8000:8000"]
     environment:

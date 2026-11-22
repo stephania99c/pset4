@@ -1,0 +1,35 @@
+name: CD
+
+# Se ejecuta cuando el CI termina en main; solo publica si las pruebas pasaron
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  publicar:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Descargar el repositorio (el commit que paso el CI)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Iniciar sesion en GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Construir y publicar la imagen con el hash del commit
+        run: |
+          IMAGEN=ghcr.io/${{ github.repository_owner }}/pset4-api:${{ github.event.workflow_run.head_sha }}
+          docker build -t $IMAGEN proyecto_final/api
+          docker push $IMAGEN
