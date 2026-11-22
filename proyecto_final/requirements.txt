@@ -7,3 +7,8 @@ matplotlib
 snowflake-connector-python[pandas]
 python-dotenv
 ipykernel
+fastapi
+uvicorn
+httpx
+pytest
+sqlalchemy<2.1

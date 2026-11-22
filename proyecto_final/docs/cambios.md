@@ -31,3 +31,4 @@ Pendiente: retroalimentación aún no recibida.
 | `kestra/flow_ingesta_cartera.yml` pasa a `kestra/ingesta.yml`. | Nombre pedido en el PSet #4. |
 | Un solo `docker-compose.yml` con Kestra, MLflow, dbt y Spark. | Levantar todo con un solo comando. |
 | Memos de los PSets #2 y #3 en `docs/historial/`. | Estructura pedida en el PSet #4. |
+| Los workflows (`ci.yml`, `cd.yml`) van en `.github/workflows/` en la raíz del repo, no dentro de `proyecto_final/`. | GitHub Actions solo lee los workflows desde la raíz del repositorio. |
