@@ -16,3 +16,6 @@ dbt/.user.yml
 __pycache__/
 .ipynb_checkpoints/
 .venv/
+
+# Registro de predicciones de la API (se carga a Snowflake)
+registros/

@@ -41,6 +41,18 @@ services:
       --backend-store-uri sqlite:////mlflow/mlflow.db
       --artifacts-destination /mlflow/artifacts
 
+  # Servicio de prediccion (seccion 2 del PSet 4)
+  api:
+    build: ./api
+    ports: ["8000:8000"]
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MODO_RESPALDO: ${MODO_RESPALDO:-false}
+      REGISTRO_PREDICCIONES: /app/registros/predicciones.csv
+    volumes:
+      - ./registros:/app/registros
+    depends_on: [mlflow]
+
   # Herramientas del PSet 2 (se usan desde Kestra o a mano con "docker compose run")
   dbt:
     image: pset2-tools:1.0
