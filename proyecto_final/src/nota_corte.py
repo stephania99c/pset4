@@ -6,7 +6,8 @@ promedio del credito numero 600 de cada dia de entrenamiento.
 
 Uso (desde proyecto_final, con MLflow encendido):
 
-    python src/nota_corte.py
+    python src/nota_corte.py              # para el champion
+    python src/nota_corte.py challenger   # para el challenger
 """
 
 import sys
@@ -39,17 +40,19 @@ def calcular_notas(modelo, base):
 
 
 if __name__ == "__main__":
+    alias = sys.argv[1] if len(sys.argv) > 1 else "champion"
+
     base = cargar_base()
     base = base[base["fecha_corte"] <= FIN_ENTRENAMIENTO]
 
     cliente = MlflowClient()
-    version = cliente.get_model_version_by_alias(MODELO, "champion").version
-    modelo = mlflow.sklearn.load_model(f"models:/{MODELO}@champion")
+    version = cliente.get_model_version_by_alias(MODELO, alias).version
+    modelo = mlflow.sklearn.load_model(f"models:/{MODELO}@{alias}")
 
     notas = calcular_notas(modelo, base)
     nota_modelo = round(notas["modelo (probabilidad x capital)"], 2)
     cliente.set_model_version_tag(MODELO, version, "nota_corte", nota_modelo)
 
-    print(f"Champion: version {version}")
+    print(f"{alias}: version {version}")
     for nombre, valor in notas.items():
         print(f"Nota de corte {nombre}: {valor:,.2f}")
