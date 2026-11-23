@@ -17,7 +17,7 @@ Cada observación recibida en los PSets #1 a #3, qué se cambió y en qué archi
 | Star schema: revisar la utilidad de `dim_cliente`. | Hecho. `dim_cliente` ahora resume al cliente: número de créditos de auto, monto financiado total y si tiene algún crédito en mora en su último corte. | `dbt/models/gold/dim_cliente.sql` |
 | Spark y OBT: los 378 pagos fuera de los días de cartera deben seguir identificados y documentados. | Hecho. `fct_pagos` conserva todos los pagos y marca con `en_obt = false` los que caen fuera de los días de cartera; Spark imprime el conteo (378). | `dbt/models/gold/fct_pagos.sql`, `spark/job_obt.py` |
 | Infraestructura: eliminar la ejecución manual de dbt y de Spark. | Hecho. dbt y Spark se ejecutan desde Kestra; ya no se corren a mano. | `kestra/ingesta.yml`, `docker-compose.yml` |
-| Documento: reemplazar los diagramas en texto por diagramas visuales. | Pendiente | `docs/arquitectura.png`, `docs/modelo_dimensional.png` |
+| Documento: reemplazar los diagramas en texto por diagramas visuales. | Hecho. Se eliminó `docs/diagramas.md` y se agregaron dos diagramas visuales: arquitectura completa y modelo dimensional de Gold. | `docs/arquitectura.png`, `docs/modelo_dimensional.png` |
 
 ## PSet #3
 
