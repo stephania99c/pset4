@@ -1,0 +1,50 @@
+id: monitoreo
+namespace: proyecto.cartera
+description: |
+  Monitoreo de un lote (seccion 6). Calcula las metricas de sistema, datos,
+  deriva y modelo, las guarda en MONITOREO, registra las alertas en ALERTAS y
+  en este log, y dispara el reentrenamiento si el desempeno cae.
+
+inputs:
+  - id: fecha
+    type: STRING
+    description: Lote a monitorear (AAAA-MM-DD)
+
+tasks:
+  - id: calcular_metricas
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python /proyecto/monitoreo/alertas.py {{ inputs.fecha }}
+
+  - id: si_hay_que_reentrenar
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.calcular_metricas.vars.reentrenar }}"
+    then:
+      - id: disparar_reentrenamiento
+        type: io.kestra.plugin.core.flow.Subflow
+        namespace: proyecto.cartera
+        flowId: reentrenamiento
+        inputs:
+          fecha: "{{ inputs.fecha }}"
+          motivo: "{{ outputs.calcular_metricas.vars.motivo }}"
+        wait: true
+        transmitFailed: true
+
+errors:
+  - id: avisar_error
+    type: io.kestra.plugin.core.log.Log
+    level: ERROR
+    message: "Fallo el monitoreo del lote {{ inputs.fecha }}: {{ errorLogs()[0]['message'] }}"
+
+pluginDefaults:
+  - type: io.kestra.plugin.scripts.python.Commands
+    values:
+      containerImage: proyecto-ml:1.0
+      taskRunner:
+        type: io.kestra.plugin.scripts.runner.docker.Docker
+        pullPolicy: NEVER
+        networkMode: proyecto_final_default
+        volumes:
+          - "{{ envs.proyecto }}:/proyecto"
+      env:
+        MLFLOW_TRACKING_URI: http://mlflow:5000

@@ -7,10 +7,12 @@ import hashlib
 import pandas as pd
 import snowflake.connector
 from dotenv import load_dotenv
+from snowflake.connector.pandas_tools import write_pandas
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 TABLA = "CARTERA.GOLD.OBT_CARTERA_DIARIA"
+PRODUCCION = "CARTERA.PRODUCCION"  # tablas de la simulacion de produccion (PSet 4)
 
 
 def conectar():
@@ -62,3 +64,32 @@ def huella(df):
     """Primeros 12 caracteres del hash MD5 de una tabla: si cambia un solo dato, cambia la huella."""
     valores = pd.util.hash_pandas_object(df, index=False).values
     return hashlib.md5(valores.tobytes()).hexdigest()[:12]
+
+
+# --- Tablas de la simulacion de produccion (PSet 4) ---
+
+def leer_tabla(nombre):
+    """Lee una tabla del esquema PRODUCCION. Si todavia no existe, devuelve una tabla vacia."""
+    con = conectar()
+    try:
+        df = con.cursor().execute(f"SELECT * FROM {PRODUCCION}.{nombre}").fetch_pandas_all()
+    except snowflake.connector.errors.ProgrammingError:
+        df = pd.DataFrame()
+    con.close()
+    df.columns = [c.lower() for c in df.columns]
+    return df
+
+
+def escribir_tabla(df, nombre, reemplazar=False):
+    """Agrega filas a una tabla del esquema PRODUCCION (o la reemplaza). La crea si no existe."""
+    con = conectar()
+    write_pandas(con, df, nombre.upper(), database="CARTERA", schema="PRODUCCION",
+                 auto_create_table=True, overwrite=reemplazar, quote_identifiers=False)
+    con.close()
+
+
+def borrar_tabla(nombre):
+    """Borra una tabla del esquema PRODUCCION, para repetir la simulacion desde cero."""
+    con = conectar()
+    con.cursor().execute(f"DROP TABLE IF EXISTS {PRODUCCION}.{nombre}")
+    con.close()

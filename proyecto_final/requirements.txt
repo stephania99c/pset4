@@ -12,3 +12,5 @@ uvicorn
 httpx
 pytest
 sqlalchemy<2.1
+requests
+streamlit

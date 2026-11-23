@@ -1,0 +1,71 @@
+id: produccion_lotes
+namespace: proyecto.cartera
+description: |
+  Simulacion de produccion (seccion 5). Por cada lote, en orden: lo puntua
+  llamando a la API, guarda las predicciones en PREDICCIONES y ejecuta el
+  monitoreo, que evalua el lote cuyo target ya llego (d - 7).
+
+inputs:
+  - id: fechas
+    type: ARRAY
+    itemType: STRING
+    description: Lotes a procesar, en orden
+    defaults:
+      - "2026-10-14"
+      - "2026-10-15"
+      - "2026-10-16"
+      - "2026-10-17"
+      - "2026-10-18"
+      - "2026-10-19"
+      - "2026-10-20"
+      - "2026-10-21"
+      - "2026-10-22"
+      - "2026-10-23"
+      - "2026-10-24"
+      - "2026-10-25"
+      - "2026-10-26"
+      - "2026-10-27"
+      - "2026-10-28"
+      - "2026-10-29"
+      - "2026-10-30"
+      - "2026-10-31"
+
+tasks:
+  - id: por_cada_lote
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ inputs.fechas }}"
+    concurrencyLimit: 1
+    tasks:
+      - id: puntuar
+        type: io.kestra.plugin.scripts.python.Commands
+        commands:
+          - python /proyecto/src/produccion.py {{ taskrun.value }}
+
+      - id: monitorear
+        type: io.kestra.plugin.core.flow.Subflow
+        namespace: proyecto.cartera
+        flowId: monitoreo
+        inputs:
+          fecha: "{{ taskrun.value }}"
+        wait: true
+        transmitFailed: true
+
+errors:
+  - id: avisar_error
+    type: io.kestra.plugin.core.log.Log
+    level: ERROR
+    message: "Fallo la simulacion en la tarea {{ errorLogs()[0]['taskId'] }}: {{ errorLogs()[0]['message'] }}"
+
+pluginDefaults:
+  - type: io.kestra.plugin.scripts.python.Commands
+    values:
+      containerImage: proyecto-ml:1.0
+      taskRunner:
+        type: io.kestra.plugin.scripts.runner.docker.Docker
+        pullPolicy: NEVER
+        networkMode: proyecto_final_default
+        volumes:
+          - "{{ envs.proyecto }}:/proyecto"
+      env:
+        MLFLOW_TRACKING_URI: http://mlflow:5000
+        API_URL: http://api:8000

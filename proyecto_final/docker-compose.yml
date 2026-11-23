@@ -12,6 +12,7 @@ services:
       ENV_SNOWFLAKE_ROLE: ${SNOWFLAKE_ROLE}
       ENV_SNOWFLAKE_WAREHOUSE: ${SNOWFLAKE_WAREHOUSE}
       ENV_FUENTE_URL: ${FUENTE_URL}
+      ENV_PROYECTO: ${PWD}
       KESTRA_CONFIGURATION: |
         kestra:
           server:
@@ -22,6 +23,12 @@ services:
           tasks:
             tmp-dir:
               path: /tmp/kestra-wd/tmp
+
+          plugins:
+            configurations:
+              - type: io.kestra.plugin.scripts.runner.docker.Docker
+                values:
+                  volume-enabled: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/kestra-wd:/tmp/kestra-wd
@@ -52,6 +59,19 @@ services:
       REGISTRO_PREDICCIONES: /app/registros/predicciones.csv
     volumes:
       - ./registros:/app/registros
+    depends_on: [mlflow]
+    
+  # Tablero de monitoreo (seccion 6.4). Su imagen es la misma que usa Kestra para los scripts.
+  tablero:
+    image: proyecto-ml:1.0
+    build:
+      context: .
+      dockerfile: herramientas/Dockerfile.ml
+    env_file: .env
+    ports: ["8501:8501"]
+    volumes:
+      - ./:/proyecto
+    command: streamlit run /proyecto/monitoreo/tablero.py --server.port 8501 --server.address 0.0.0.0
     depends_on: [mlflow]
 
   # Herramientas del PSet 2 (se usan desde Kestra o a mano con "docker compose run")
