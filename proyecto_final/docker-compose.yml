@@ -4,6 +4,7 @@ services:
     image: kestra/kestra:latest
     command: server local
     user: "root"
+    restart: unless-stopped
     ports: ["8080:8080"]
     environment:
       ENV_SNOWFLAKE_ACCOUNT: ${SNOWFLAKE_ACCOUNT}
@@ -13,6 +14,7 @@ services:
       ENV_SNOWFLAKE_WAREHOUSE: ${SNOWFLAKE_WAREHOUSE}
       ENV_FUENTE_URL: ${FUENTE_URL}
       ENV_PROYECTO: ${PWD}
+      JAVA_OPTS: "-Xmx1500m"
       KESTRA_CONFIGURATION: |
         kestra:
           server:

@@ -32,21 +32,31 @@ inputs:
 
 tasks:
   - id: por_cada_lote
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{ inputs.fechas }}"
     concurrencyLimit: 1
     tasks:
       - id: puntuar
         type: io.kestra.plugin.scripts.python.Commands
+        containerImage: proyecto-ml:1.0
+        taskRunner:
+          type: io.kestra.plugin.scripts.runner.docker.Docker
+          pullPolicy: NEVER
+          networkMode: proyecto_final_default
+          volumes:
+            - "{{ envs.proyecto }}:/proyecto"
+        env:
+          MLFLOW_TRACKING_URI: http://mlflow:5000
+          API_URL: http://api:8000
         commands:
-          - python /proyecto/src/produccion.py {{ taskrun.value }}
+          - python /proyecto/src/produccion.py {{ item.value }}
 
       - id: monitorear
         type: io.kestra.plugin.core.flow.Subflow
         namespace: proyecto.cartera
         flowId: monitoreo
         inputs:
-          fecha: "{{ taskrun.value }}"
+          fecha: "{{ item.value }}"
         wait: true
         transmitFailed: true
 
@@ -54,18 +64,4 @@ errors:
   - id: avisar_error
     type: io.kestra.plugin.core.log.Log
     level: ERROR
-    message: "Fallo la simulacion en la tarea {{ errorLogs()[0]['taskId'] }}: {{ errorLogs()[0]['message'] }}"
-
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python.Commands
-    values:
-      containerImage: proyecto-ml:1.0
-      taskRunner:
-        type: io.kestra.plugin.scripts.runner.docker.Docker
-        pullPolicy: NEVER
-        networkMode: proyecto_final_default
-        volumes:
-          - "{{ envs.proyecto }}:/proyecto"
-      env:
-        MLFLOW_TRACKING_URI: http://mlflow:5000
-        API_URL: http://api:8000
+    message: "Fallo la simulacion: {{ errorLogs()[0]['message'] }}"

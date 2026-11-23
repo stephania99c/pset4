@@ -17,6 +17,15 @@ inputs:
 tasks:
   - id: entrenar_challenger
     type: io.kestra.plugin.scripts.python.Commands
+    containerImage: proyecto-ml:1.0
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      pullPolicy: NEVER
+      networkMode: proyecto_final_default
+      volumes:
+        - "{{ envs.proyecto }}:/proyecto"
+    env:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
     commands:
       - python /proyecto/src/reentrenar.py entrenar {{ inputs.fecha }} "{{ inputs.motivo }}"
 
@@ -28,7 +37,7 @@ tasks:
       Para continuar: Resume, marca "aprobar" si se promueve y escribe el motivo.
     onResume:
       - id: aprobar
-        type: BOOLEAN
+        type: BOOL
         defaults: false
       - id: comentario
         type: STRING
@@ -36,6 +45,15 @@ tasks:
 
   - id: decidir
     type: io.kestra.plugin.scripts.python.Commands
+    containerImage: proyecto-ml:1.0
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      pullPolicy: NEVER
+      networkMode: proyecto_final_default
+      volumes:
+        - "{{ envs.proyecto }}:/proyecto"
+    env:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
     commands:
       - python /proyecto/src/reentrenar.py decidir {{ outputs.entrenar_challenger.vars.version }} {{ outputs.aprobacion.onResume.aprobar }} "{{ outputs.aprobacion.onResume.comentario }}"
 
@@ -44,16 +62,3 @@ errors:
     type: io.kestra.plugin.core.log.Log
     level: ERROR
     message: "Fallo el reentrenamiento: {{ errorLogs()[0]['message'] }}"
-
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python.Commands
-    values:
-      containerImage: proyecto-ml:1.0
-      taskRunner:
-        type: io.kestra.plugin.scripts.runner.docker.Docker
-        pullPolicy: NEVER
-        networkMode: proyecto_final_default
-        volumes:
-          - "{{ envs.proyecto }}:/proyecto"
-      env:
-        MLFLOW_TRACKING_URI: http://mlflow:5000

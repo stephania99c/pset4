@@ -13,6 +13,15 @@ inputs:
 tasks:
   - id: calcular_metricas
     type: io.kestra.plugin.scripts.python.Commands
+    containerImage: proyecto-ml:1.0
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      pullPolicy: NEVER
+      networkMode: proyecto_final_default
+      volumes:
+        - "{{ envs.proyecto }}:/proyecto"
+    env:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
     commands:
       - python /proyecto/monitoreo/alertas.py {{ inputs.fecha }}
 
@@ -35,16 +44,3 @@ errors:
     type: io.kestra.plugin.core.log.Log
     level: ERROR
     message: "Fallo el monitoreo del lote {{ inputs.fecha }}: {{ errorLogs()[0]['message'] }}"
-
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python.Commands
-    values:
-      containerImage: proyecto-ml:1.0
-      taskRunner:
-        type: io.kestra.plugin.scripts.runner.docker.Docker
-        pullPolicy: NEVER
-        networkMode: proyecto_final_default
-        volumes:
-          - "{{ envs.proyecto }}:/proyecto"
-      env:
-        MLFLOW_TRACKING_URI: http://mlflow:5000
