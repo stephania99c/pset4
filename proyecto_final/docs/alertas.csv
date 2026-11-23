@@ -1,0 +1,37 @@
+fecha_lote,metrica,variable,valor,umbral,severidad,recibe,accion,fecha_proceso,registrada
+2026-10-16,psi,dias_mora,0.18703613234427502,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-16,2026-11-23T01:08:48
+2026-10-17,psi,dia_pago,0.2535205858675547,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-17,2026-11-23T01:11:04
+2026-10-18,psi,dias_mora,6.0910816002482,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-18,2026-11-23T01:13:04
+2026-10-18,psi,dia_pago,0.2535205858675547,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-18,2026-11-23T01:13:04
+2026-10-19,psi,dias_mora,6.049859484824783,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-19,2026-11-23T01:15:44
+2026-10-19,psi,dia_pago,0.23867043092600215,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-19,2026-11-23T01:15:44
+2026-10-20,psi,dias_mora,5.898523053370957,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-20,2026-11-23T01:17:24
+2026-10-20,psi,dia_pago,0.18628880541367057,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-20,2026-11-23T01:17:24
+2026-10-21,psi,dias_mora,5.820694164039715,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-21,2026-11-23T01:18:58
+2026-10-21,psi,dia_pago,0.16739472631702082,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-21,2026-11-23T01:18:58
+2026-10-22,psi,dias_mora,5.777400532222226,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-22,2026-11-23T01:20:33
+2026-10-22,psi,dia_pago,0.16159453901330986,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-22,2026-11-23T01:20:33
+2026-10-23,psi,dias_mora,5.732611694301312,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-23,2026-11-23T01:22:02
+2026-10-23,psi,dia_pago,0.1520907212104162,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-23,2026-11-23T01:22:02
+2026-10-24,psi,dias_mora,5.6546486452555635,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-24,2026-11-23T01:23:30
+2026-10-24,psi,dia_pago,0.14791420955847182,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-24,2026-11-23T01:23:30
+2026-10-25,psi,dias_mora,5.963116343245564,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-25,2026-11-23T01:25:17
+2026-10-25,psi,dia_pago,0.1629668829357134,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-25,2026-11-23T01:25:17
+2026-10-18,pr_auc,,0.38534316517611084,0.415,Alta,Equipo de modelos,Reentrenar si se repite 3 lotes seguidos,2026-10-25,2026-11-23T01:25:17
+2026-10-26,psi,dias_mora,5.92885669733716,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-26,2026-11-23T01:26:58
+2026-10-26,psi,dia_pago,0.15174545553388893,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-26,2026-11-23T01:26:58
+2026-10-27,psi,dias_mora,5.816701864566687,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-27,2026-11-23T01:28:34
+2026-10-27,psi,dia_pago,0.1187630881309601,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-27,2026-11-23T01:28:34
+2026-10-20,pr_auc,,0.3371556333272655,0.415,Alta,Equipo de modelos,Reentrenar si se repite 3 lotes seguidos,2026-10-27,2026-11-23T01:28:34
+2026-10-28,psi,dias_mora,5.771324335198232,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-28,2026-11-23T01:30:13
+2026-10-28,psi,dia_pago,0.11038334979443101,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-28,2026-11-23T01:30:13
+2026-10-21,pr_auc,,0.3201990909114478,0.415,Alta,Equipo de modelos,Reentrenar si se repite 3 lotes seguidos,2026-10-28,2026-11-23T01:30:13
+2026-10-29,psi,dias_mora,5.72076299685845,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-29,2026-11-23T01:31:42
+2026-10-29,psi,dia_pago,0.10535897761033357,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-29,2026-11-23T01:31:42
+2026-10-22,pr_auc,,0.36284735541745394,0.415,Alta,Equipo de modelos,Reentrenar si se repite 3 lotes seguidos,2026-10-29,2026-11-23T01:31:42
+2026-10-22,reentrenamiento,,1.0,3.0,Alta,Equipo de modelos,Se dispara el reentrenamiento,2026-10-29,2026-11-23T01:31:42
+2026-10-30,psi,dias_mora,5.666623960033791,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-30,2026-11-23T01:52:59
+2026-10-30,psi,compromiso_semana_previa,0.10459282637662909,0.1,Media,Equipo de datos,Vigilar en los siguientes lotes,2026-10-30,2026-11-23T01:52:59
+2026-10-23,pr_auc,,0.3460548934686622,0.415,Alta,Equipo de modelos,Reentrenar si se repite 3 lotes seguidos,2026-10-30,2026-11-23T01:52:59
+2026-10-31,psi,dias_mora,5.588851497338084,0.25,Alta,Equipo de datos,Revisar la fuente; reentrenar solo si cae el desempeno,2026-10-31,2026-11-23T01:54:39
+2026-10-24,pr_auc,,0.341851324532067,0.415,Alta,Equipo de modelos,Reentrenar si se repite 3 lotes seguidos,2026-10-31,2026-11-23T01:54:39
