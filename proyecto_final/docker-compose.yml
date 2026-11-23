@@ -79,6 +79,9 @@ services:
   # Herramientas del PSet 2 (se usan desde Kestra o a mano con "docker compose run")
   dbt:
     image: pset2-tools:1.0
+    build:
+     context: .
+     dockerfile: herramientas/Dockerfile
     profiles: ["herramientas"]
     env_file: .env
     environment:

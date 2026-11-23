@@ -77,6 +77,7 @@ def main():
     print(f"Filas OBT:                {filas_obt}")
     print(f"Duplicados en el grano:   {duplicados}")
     print(f"Pagos en fct_pagos: {pagos_total} | pagos que caen en un dia de cartera: {pagos_en_obt}")
+    print(f"Pagos fuera de los dias de cartera (en_obt = false): {pagos.filter(~F.col('en_obt')).count()}")
     if filas_obt != filas_cartera or duplicados != 0:
         raise ValueError("La OBT no respeta el grano: revisar los joins")
 

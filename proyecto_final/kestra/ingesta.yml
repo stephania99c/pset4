@@ -1,12 +1,15 @@
-id: ingesta_cartera
-namespace: pset2.cartera
-description: Ingesta diaria de la cartera hacia Snowflake (esquema RAW).
+id: ingesta
+namespace: proyecto.cartera
+description: |
+  Ingesta diaria de punta a punta (PSet 2, corregida en el PSet 4): carga el dia en
+  RAW, construye Bronze, Silver y Gold con dbt (con sus tests) y arma la OBT con
+  Spark. Si cualquier tarea falla, el bloque errors lo registra en el log.
 
 inputs:
   - id: fecha
     type: STRING
     required: false
-    description: Fecha del corte (AAAA-MM-DD)
+    description: Fecha del corte (AAAA-MM-DD). Vacio = fecha del disparo.
 
 concurrency:
   limit: 1
@@ -32,6 +35,47 @@ tasks:
       type: constant
       maxAttempts: 3
       interval: PT5M
+
+  - id: construir_gold_dbt
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: pset2-tools:1.0
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      pullPolicy: NEVER
+      volumes:
+        - "{{ envs.proyecto }}/dbt:/app/dbt"
+    env:
+      SNOWFLAKE_ACCOUNT: "{{ envs.snowflake_account }}"
+      SNOWFLAKE_USER: "{{ envs.snowflake_user }}"
+      SNOWFLAKE_PAT: "{{ envs.snowflake_pat }}"
+      SNOWFLAKE_ROLE: "{{ envs.snowflake_role }}"
+      SNOWFLAKE_WAREHOUSE: "{{ envs.snowflake_warehouse }}"
+      DBT_PROFILES_DIR: /app/dbt
+    commands:
+      - cd /app/dbt && dbt build
+
+  - id: construir_obt_spark
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: pset2-tools:1.0
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      pullPolicy: NEVER
+      volumes:
+        - "{{ envs.proyecto }}/spark:/app/spark"
+    env:
+      SNOWFLAKE_ACCOUNT: "{{ envs.snowflake_account }}"
+      SNOWFLAKE_USER: "{{ envs.snowflake_user }}"
+      SNOWFLAKE_PAT: "{{ envs.snowflake_pat }}"
+      SNOWFLAKE_ROLE: "{{ envs.snowflake_role }}"
+      SNOWFLAKE_WAREHOUSE: "{{ envs.snowflake_warehouse }}"
+    commands:
+      - spark-submit --driver-memory 2g /app/spark/job_obt.py
+
+errors:
+  - id: registrar_error
+    type: io.kestra.plugin.core.log.Log
+    level: ERROR
+    message: "Fallo la ingesta en la tarea {{ errorLogs()[0]['taskId'] }}: {{ errorLogs()[0]['message'] }}"
 
 triggers:
   - id: diario
