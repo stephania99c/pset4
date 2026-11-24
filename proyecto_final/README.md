@@ -1,6 +1,6 @@
 # Proyecto final: priorización de cartera en cobranzas
 
-Ciencia de Datos · Maestría en Ciencia de Datos (USFQ) · PSets #1 a #4 · Stephania Cárdenas Jácome
+Ciencia de Datos · Maestría en Ciencia de Datos (USFQ) · PSets #1 a #4 · Jennifer Stephanía Cárdenas Jácome
 
 > **Datos:** anonimizados y sintéticos. No contienen información real de clientes.
 

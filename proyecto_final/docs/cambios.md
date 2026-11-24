@@ -21,12 +21,17 @@ Cada observación recibida en los PSets #1 a #3, qué se cambió y en qué archi
 
 ## PSet #3
 
-Pendiente: retroalimentación aún no recibida.
+Sin observaciones (calificación 100/100). No se requirieron cambios.
 
 ## Decisiones actualizadas en el proyecto final
 
 | Decisión anterior | Decisión nueva | Motivo |
 |---|---|---|
+| Línea base (PSet 1): priorización según PAR 30, PAR 60, nuevo y viejo vencido. | Línea base: los 600 créditos con mayor capital insoluto. | Hoy la elección dentro de cada grupo no tiene una regla escrita; "mayor capital primero" es la aproximación que se puede reproducir con los datos. |
+| Métrica técnica (PSet 1): AUC y precision@60 por cobrador. | PR-AUC y pagos captados en la lista de 600 del call center. | Solo 18.7 % paga (la PR-AUC refleja mejor la clase minoritaria) y los datos no guardan el historial de asignación por cobrador. |
+| Unidad (PSet 1): crédito en mora asignado a un cobrador, cada día. | Crédito de auto en mora (pagaré principal), cada día; la lista es del call center. | Sin historial de asignación no se puede armar la lista por cobrador. |
+| Meta del pitch (PSet 1): +10 % de recuperación en un piloto. | Resultado de la simulación: +52 % de pagos captados frente a la regla actual (2 651 vs. 1 745). | Coherencia pedida en el PSet 4: las cifras del pitch se reemplazan por las de la sección 9 del memo. |
+| Juicio humano (PSet 1): el cobrador puede sacar créditos registrando el motivo. | Se mantiene y se amplía: exclusiones de casos especiales, aprobación humana de cada modelo nuevo y estrategia aparte para castigadas. | Lo que mostró la simulación y el conocimiento del negocio. |
 | La lista diaria se armaba en un notebook. | El modelo `champion` se sirve con una API (FastAPI + Docker) que valida la entrada, decide gestionar / no gestionar y registra cada predicción. | Despliegue pedido en el PSet #4. |
 | Umbral de decisión fijo. | "Nota de corte": puntaje promedio del crédito número 600 en los días de entrenamiento; se guarda como etiqueta de cada versión del modelo. | La capacidad es de 600 llamadas al día (10 cobradores × 60). |
 | Sin plan de respaldo. | Si el modelo no carga o se activa `MODO_RESPALDO`, la API ordena por capital insoluto (regla actual del negocio). | Continuidad de la operación. |
